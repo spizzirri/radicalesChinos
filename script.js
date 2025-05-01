@@ -2,19 +2,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const radicalListContainer = document.getElementById('radical-list-container');
     const writingModal = document.getElementById('writing-modal');
     const quizModal = document.getElementById('quiz-modal');
+    const quizConfigModal = document.getElementById('quiz-config-modal');
+    const studyModal = document.getElementById('study-modal');
     const closeWritingBtn = document.getElementById('close-writing-modal');
     const closeQuizBtn = document.getElementById('close-quiz-modal');
-    const startQuizBtn = document.getElementById('start-quiz-btn');
-    const quizCountInput = document.getElementById('quiz-count');
-    const startStudyBtn = document.getElementById('start-study-btn');
-    const studyModal = document.getElementById('study-modal');
+    const closeQuizConfigBtn = document.getElementById('close-quiz-config-modal');
     const closeStudyBtn = document.getElementById('close-study-modal');
+    const startQuizBtn = document.getElementById('start-quiz-btn');
+    const startStudyBtn = document.getElementById('start-study-btn');
+    const startQuizSessionBtn = document.getElementById('start-quiz-session');
     const startStudySessionBtn = document.getElementById('start-study-session');
     const studyCard = document.getElementById('study-card');
     const studyProgress = document.getElementById('study-progress');
-    const quizConfigModal = document.getElementById('quiz-config-modal');
-    const closeQuizConfigBtn = document.getElementById('close-quiz-config-modal');
-    const startQuizSessionBtn = document.getElementById('start-quiz-session');
+    const quizCountInput = document.getElementById('quiz-count');
 
     // Variables para el modo de estudio
     let studyRadicals = [];
@@ -59,33 +59,89 @@ document.addEventListener('DOMContentLoaded', () => {
     // Modal Close Buttons
     closeWritingBtn.onclick = () => writingModal.style.display = 'none';
     closeQuizBtn.onclick = () => quizModal.style.display = 'none';
-    window.onclick = (event) => { // Close if clicked outside modal
+    closeQuizConfigBtn.onclick = () => quizConfigModal.style.display = 'none';
+    closeStudyBtn.onclick = () => studyModal.style.display = 'none';
+
+    // Event listener para cerrar el modal al hacer clic fuera
+    window.onclick = (event) => {
         if (event.target == writingModal) writingModal.style.display = 'none';
         if (event.target == quizModal) quizModal.style.display = 'none';
+        if (event.target == quizConfigModal) quizConfigModal.style.display = 'none';
+        if (event.target == studyModal) studyModal.style.display = 'none';
     };
 
-    // Quiz Start Button
-    startQuizBtn.onclick = () => quizConfigModal.style.display = 'block';
-    closeQuizConfigBtn.onclick = () => quizConfigModal.style.display = 'none';
-    startQuizSessionBtn.onclick = () => {
-        const count = parseInt(quizCountInput.value);
+    // Event Listeners para el modo de estudio
+    startStudyBtn.onclick = () => studyModal.style.display = 'block';
+    startStudySessionBtn.onclick = () => {
+        const count = parseInt(document.getElementById('study-count').value);
         if (count > 0 && count <= radicalsData.length) {
-            quizConfigModal.style.display = 'none';
-            startQuiz(count);
+            // Seleccionar radicales aleatorios
+            const shuffled = radicalsData.sort(() => 0.5 - Math.random());
+            studyRadicals = shuffled.slice(0, count);
+            currentStudyIndex = 0;
+            
+            // Mostrar el primer radical
+            showNextRadical();
+            studyCard.style.display = 'block';
+            document.querySelector('.config-controls').style.display = 'none';
         } else {
             alert(`Por favor, introduce un número entre 1 y ${radicalsData.length}.`);
         }
     };
 
+    // Event Listeners para los botones de estudio
+    document.querySelector('.pronounce-study-btn').onclick = () => {
+        const currentRadical = studyRadicals[currentStudyIndex];
+        speak(currentRadical.radical);
+    };
+
+    document.querySelector('.learned-btn').onclick = () => {
+        const currentRadical = studyRadicals[currentStudyIndex];
+        learnedRadicals.add(currentRadical.radical);
+        notLearnedRadicals.delete(currentRadical.radical);
+        saveProgress();
+        currentStudyIndex++;
+        showNextRadical();
+    };
+
+    document.querySelector('.not-learned-btn').onclick = () => {
+        const currentRadical = studyRadicals[currentStudyIndex];
+        notLearnedRadicals.add(currentRadical.radical);
+        learnedRadicals.delete(currentRadical.radical);
+        saveProgress();
+        currentStudyIndex++;
+        showNextRadical();
+    };
+
+    // Función para guardar el progreso en localStorage
+    function saveProgress() {
+        localStorage.setItem('learnedRadicals', JSON.stringify([...learnedRadicals]));
+        localStorage.setItem('notLearnedRadicals', JSON.stringify([...notLearnedRadicals]));
+    }
+
+    // Función para mostrar el siguiente radical en el modo de estudio
+    function showNextRadical() {
+        if (currentStudyIndex >= studyRadicals.length) {
+            // Sesión completada
+            studyCard.style.display = 'none';
+            document.querySelector('.config-controls').style.display = 'block';
+            studyProgress.textContent = '¡Sesión de estudio completada!';
+            return;
+        }
+
+        const currentRadical = studyRadicals[currentStudyIndex];
+        document.querySelector('.radical-char-study').textContent = currentRadical.radical;
+        document.querySelector('.radical-pinyin').textContent = currentRadical.pinyin;
+        document.querySelector('.radical-meaning').textContent = currentRadical.meaning;
+        studyProgress.textContent = `Radical ${currentStudyIndex + 1} de ${studyRadicals.length}`;
+    }
+
     // --- PRONUNCIATION ---
     function speak(text) {
         if ('speechSynthesis' in window) {
             const utterance = new SpeechSynthesisUtterance(text);
-            utterance.lang = 'zh-CN'; // Set language to Chinese
-            // Opcional: buscar y seleccionar una voz específica si está disponible
-            // const voices = window.speechSynthesis.getVoices();
-            // utterance.voice = voices.find(voice => voice.lang === 'zh-CN');
-            window.speechSynthesis.cancel(); // Cancel previous speech
+            utterance.lang = 'zh-CN';
+            window.speechSynthesis.cancel();
             window.speechSynthesis.speak(utterance);
         } else {
             alert('Tu navegador no soporta la síntesis de voz.');
@@ -310,31 +366,94 @@ document.addEventListener('DOMContentLoaded', () => {
             const button = document.createElement('button');
             button.className = 'quiz-option';
             button.textContent = option;
-            button.onclick = () => {
-                quizAnswerInput.value = option;
-                checkAnswer();
-            };
+            button.onclick = () => handleOptionClick(button, option);
             optionsContainer.appendChild(button);
         });
     }
 
-    function checkAnswer() {
+    function handleOptionClick(button, selectedOption) {
+        const isCorrect = selectedOption.toLowerCase() === currentQuestionData.correctAnswer.toLowerCase();
+        
+        if (isCorrect) {
+            // Respuesta correcta
+            button.classList.add('correct');
+            score++;
+            quizFeedbackEl.textContent = '¡Correcto!';
+            quizFeedbackEl.className = 'correct';
+            disableAllOptions();
+            showNextQuestionAfterDelay();
+        } else {
+            // Primera respuesta incorrecta
+            button.classList.add('incorrect');
+            button.disabled = true;
+            
+            // Verificar si es el primer intento
+            const incorrectOptions = document.querySelectorAll('.quiz-option.incorrect');
+            if (incorrectOptions.length === 1) {
+                // Es el primer intento, permitir un segundo intento
+                quizFeedbackEl.textContent = 'Incorrecto. Intenta con otra opción.';
+                quizFeedbackEl.className = 'incorrect';
+            } else {
+                // Es el segundo intento, mostrar la respuesta correcta
+                quizFeedbackEl.textContent = `Incorrecto. La respuesta era: ${currentQuestionData.correctAnswer}`;
+                quizFeedbackEl.className = 'incorrect';
+                disableAllOptions();
+                showNextQuestionAfterDelay();
+            }
+        }
+    }
+
+    function disableAllOptions() {
+        const options = document.querySelectorAll('.quiz-option');
+        options.forEach(option => {
+            option.disabled = true;
+            if (option.textContent.toLowerCase() === currentQuestionData.correctAnswer.toLowerCase()) {
+                option.classList.add('correct');
+            }
+        });
+    }
+
+    function showNextQuestionAfterDelay() {
+        setTimeout(() => {
+            currentQuestionIndex++;
+            showNextQuestion();
+        }, 1500);
+    }
+
+    function showQuizResults() {
+        quizArea.style.display = 'none';
+        quizResultsEl.style.display = 'block';
+        quizScoreEl.textContent = `Resultado Final: ${score} de ${quizRadicals.length} correctas (${Math.round((score / quizRadicals.length) * 100)}%).`;
+    }
+
+    // Event listeners for Quiz
+    quizSubmitBtn.onclick = () => {
         const userAnswer = quizAnswerInput.value.trim().toLowerCase();
+        checkAnswer(userAnswer);
+    };
+    
+    quizAnswerInput.addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') {
+            const userAnswer = quizAnswerInput.value.trim().toLowerCase();
+            checkAnswer(userAnswer);
+        }
+    });
+
+    function checkAnswer(userAnswer) {
         let isCorrect = false;
 
         // Allow for some flexibility in answers (e.g., multiple meanings/pinyin)
         const correctAnswers = currentQuestionData.correctAnswer.split('/').map(ans => ans.trim());
         if (correctAnswers.includes(userAnswer)) {
-             isCorrect = true;
+            isCorrect = true;
         }
         // Acepta también significados separados por coma si los hubiera
-         if (currentQuestionData.answerType === 'meaning') {
+        if (currentQuestionData.answerType === 'meaning') {
             const meaningParts = currentQuestionData.meaning.toLowerCase().split(/,|\//).map(p => p.trim());
-             if (meaningParts.includes(userAnswer)) {
-                 isCorrect = true;
-             }
+            if (meaningParts.includes(userAnswer)) {
+                isCorrect = true;
+            }
         }
-
 
         quizAnswerInput.disabled = true;
         quizSubmitBtn.style.display = 'none';
@@ -350,110 +469,28 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function showQuizResults() {
-        quizArea.style.display = 'none';
-        quizResultsEl.style.display = 'block';
-        quizScoreEl.textContent = `Resultado Final: ${score} de ${quizRadicals.length} correctas (${Math.round((score / quizRadicals.length) * 100)}%).`;
-    }
-
-    // Event listeners for Quiz
-    quizSubmitBtn.onclick = checkAnswer;
-    quizAnswerInput.addEventListener('keypress', function (e) { // Allow Enter key to submit
-        if (e.key === 'Enter') {
-            checkAnswer();
-        }
-    });
     quizNextBtn.onclick = () => {
         currentQuestionIndex++;
         showNextQuestion();
     };
+
     restartQuizBtn.onclick = () => {
-        quizModal.style.display = 'none'; // Close modal or restart directly
-        // Or call startQuiz again if you want immediate restart
-        // const count = parseInt(quizCountInput.value);
-        // startQuiz(count);
+        quizModal.style.display = 'none';
     };
 
-
-    // --- INITIALIZATION ---
-    renderRadicals();
-
-    // Función para guardar el progreso en localStorage
-    function saveProgress() {
-        localStorage.setItem('learnedRadicals', JSON.stringify([...learnedRadicals]));
-        localStorage.setItem('notLearnedRadicals', JSON.stringify([...notLearnedRadicals]));
-    }
-
-    // Función para iniciar una sesión de estudio
-    function startStudySession() {
-        const count = parseInt(document.getElementById('study-count').value);
+    // Event Listeners para el quiz
+    startQuizBtn.onclick = () => quizConfigModal.style.display = 'block';
+    startQuizSessionBtn.onclick = () => {
+        const count = parseInt(quizCountInput.value);
         if (count > 0 && count <= radicalsData.length) {
-            // Seleccionar radicales aleatorios
-            const shuffled = radicalsData.sort(() => 0.5 - Math.random());
-            studyRadicals = shuffled.slice(0, count);
-            currentStudyIndex = 0;
-            
-            // Mostrar el primer radical
-            showNextRadical();
-            studyCard.style.display = 'block';
-            document.querySelector('.study-controls').style.display = 'none';
+            quizConfigModal.style.display = 'none';
+            startQuiz(count);
         } else {
             alert(`Por favor, introduce un número entre 1 y ${radicalsData.length}.`);
         }
-    }
-
-    // Función para mostrar el siguiente radical
-    function showNextRadical() {
-        if (currentStudyIndex >= studyRadicals.length) {
-            // Sesión completada
-            studyCard.style.display = 'none';
-            document.querySelector('.study-controls').style.display = 'block';
-            studyProgress.textContent = '¡Sesión de estudio completada!';
-            return;
-        }
-
-        const currentRadical = studyRadicals[currentStudyIndex];
-        document.querySelector('.radical-char-study').textContent = currentRadical.radical;
-        document.querySelector('.radical-pinyin').textContent = currentRadical.pinyin;
-        document.querySelector('.radical-meaning').textContent = currentRadical.meaning;
-        studyProgress.textContent = `Radical ${currentStudyIndex + 1} de ${studyRadicals.length}`;
-    }
-
-    // Event Listeners para el modo de estudio
-    startStudyBtn.onclick = () => studyModal.style.display = 'block';
-    closeStudyBtn.onclick = () => studyModal.style.display = 'none';
-    startStudySessionBtn.onclick = startStudySession;
-
-    // Event listener para cerrar el modal al hacer clic fuera
-    window.onclick = (event) => {
-        if (event.target == studyModal) studyModal.style.display = 'none';
-        if (event.target == writingModal) writingModal.style.display = 'none';
-        if (event.target == quizModal) quizModal.style.display = 'none';
-        if (event.target == quizConfigModal) quizConfigModal.style.display = 'none';
     };
 
-    // Event listeners para los botones de estudio
-    document.querySelector('.pronounce-study-btn').onclick = () => {
-        const currentRadical = studyRadicals[currentStudyIndex];
-        speak(currentRadical.radical);
-    };
-
-    document.querySelector('.learned-btn').onclick = () => {
-        const currentRadical = studyRadicals[currentStudyIndex];
-        learnedRadicals.add(currentRadical.radical);
-        notLearnedRadicals.delete(currentRadical.radical);
-        saveProgress();
-        currentStudyIndex++;
-        showNextRadical();
-    };
-
-    document.querySelector('.not-learned-btn').onclick = () => {
-        const currentRadical = studyRadicals[currentStudyIndex];
-        notLearnedRadicals.add(currentRadical.radical);
-        learnedRadicals.delete(currentRadical.radical);
-        saveProgress();
-        currentStudyIndex++;
-        showNextRadical();
-    };
+    // --- INITIALIZATION ---
+    renderRadicals();
 
 }); // End DOMContentLoaded

@@ -12,8 +12,8 @@
     <header>
         <h1>Estudio de Radicales Chinos (Basado en los 214 Radicales Kangxi)</h1>
         <div class="quiz-controls">
-            <button id="start-quiz-btn">Iniciar Quiz Aleatorio</button>
-            <button id="start-study-btn">Estudio</button>
+            <button id="start-quiz-btn">🎮 Iniciar Quiz Aleatorio</button>
+            <button id="start-study-btn">📚 Estudio</button>
         </div>
     </header>
 
@@ -27,56 +27,13 @@
         <div class="modal-content">
             <span class="close-btn" id="close-quiz-config-modal">×</span>
             <h2>Configuración del Quiz</h2>
-            <div class="quiz-config-area">
-                <div class="quiz-config-controls">
+            <div class="config-area">
+                <div class="config-controls">
                     <label for="quiz-count">Número de preguntas:</label>
                     <input type="number" id="quiz-count" value="10" min="1" max="50">
                     <button id="start-quiz-session">Comenzar Quiz</button>
                 </div>
             </div>
-        </div>
-    </div>
-
-    <!-- Modal para Estudio -->
-    <div id="study-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-btn" id="close-study-modal">×</span>
-            <h2>Modo Estudio</h2>
-            <div id="study-area">
-                <div class="study-controls">
-                    <label for="study-count">Número de radicales a estudiar:</label>
-                    <input type="number" id="study-count" value="10" min="1" max="50">
-                    <button id="start-study-session">Comenzar Estudio</button>
-                </div>
-                <div id="study-card" style="display: none;">
-                    <div class="radical-char-study"></div>
-                    <div class="radical-info">
-                        <p><strong>Pinyin:</strong> <span class="radical-pinyin"></span></p>
-                        <p><strong>Significado:</strong> <span class="radical-meaning"></span></p>
-                    </div>
-                    <div class="study-buttons">
-                        <button class="pronounce-study-btn" title="Escuchar pronunciación">🔊</button>
-                        <button class="learned-btn">Ya lo aprendí</button>
-                        <button class="not-learned-btn">No lo sabía</button>
-                    </div>
-                </div>
-                <div id="study-progress"></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal para Práctica de Escritura -->
-    <div id="writing-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-btn" id="close-writing-modal">×</span>
-            <h2>Practicar Escritura</h2>
-            <div id="writing-area">
-                <div id="hanzi-writer-target"></div> <!-- Contenedor para Hanzi Writer -->
-                <canvas id="practice-canvas" width="200" height="200"></canvas> <!-- Canvas alternativo/placeholder -->
-                <p><em>Nota: La visualización del orden de trazos requiere la librería Hanzi Writer. Este es un placeholder.</em></p>
-                 <button id="clear-canvas-btn">Borrar Trazos</button>
-            </div>
-             <p id="writing-radical-info"></p>
         </div>
     </div>
 
@@ -87,6 +44,7 @@
             <h2>Quiz de Radicales</h2>
             <div id="quiz-area">
                 <p id="quiz-question"></p>
+                <div id="quiz-options"></div>
                 <input type="text" id="quiz-answer" placeholder="Escribe tu respuesta aquí">
                 <button id="submit-quiz-answer">Enviar Respuesta</button>
                 <p id="quiz-feedback"></p>
@@ -97,6 +55,49 @@
                 <p id="quiz-score"></p>
                 <button id="restart-quiz-btn">Volver a Empezar</button>
             </div>
+        </div>
+    </div>
+
+    <!-- Modal para Configuración del Estudio -->
+    <div id="study-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" id="close-study-modal">×</span>
+            <h2>Configuración del Estudio</h2>
+            <div class="config-area">
+                <div class="config-controls">
+                    <label for="study-count">Número de radicales a estudiar:</label>
+                    <input type="number" id="study-count" value="10" min="1" max="50">
+                    <button id="start-study-session">Comenzar Estudio</button>
+                </div>
+            </div>
+            <div id="study-card" style="display: none;">
+                <div class="radical-char-study"></div>
+                <div class="radical-info">
+                    <p><strong>Pinyin:</strong> <span class="radical-pinyin"></span></p>
+                    <p><strong>Significado:</strong> <span class="radical-meaning"></span></p>
+                </div>
+                <div class="study-buttons">
+                    <button class="pronounce-study-btn" title="Escuchar pronunciación">🔊</button>
+                    <button class="learned-btn">Ya lo aprendí</button>
+                    <button class="not-learned-btn">No lo sabía</button>
+                </div>
+            </div>
+            <div id="study-progress"></div>
+        </div>
+    </div>
+
+    <!-- Modal para Práctica de Escritura -->
+    <div id="writing-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" id="close-writing-modal">×</span>
+            <h2>Practicar Escritura</h2>
+            <div id="writing-area">
+                <div id="hanzi-writer-target"></div>
+                <canvas id="practice-canvas" width="200" height="200"></canvas>
+                <p><em>Nota: La visualización del orden de trazos requiere la librería Hanzi Writer. Este es un placeholder.</em></p>
+                <button id="clear-canvas-btn">Borrar Trazos</button>
+            </div>
+            <p id="writing-radical-info"></p>
         </div>
     </div>
 

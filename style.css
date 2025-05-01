@@ -38,6 +38,10 @@ header button {
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 header button:hover {
@@ -250,6 +254,20 @@ main {
     border-color: #ced4da;
 }
 
+.quiz-option.incorrect {
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+    color: #721c24;
+    cursor: not-allowed;
+}
+
+.quiz-option.correct {
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+    color: #155724;
+    cursor: not-allowed;
+}
+
 /* Estilos para el Modo Estudio */
 .study-controls {
     margin-bottom: 20px;
@@ -374,4 +392,61 @@ main {
 
 .quiz-config-controls button:hover {
     background-color: #4cae4c;
+}
+
+/* Estilos unificados para modales de configuración */
+.config-area {
+    text-align: center;
+    padding: 20px;
+}
+
+.config-controls {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.config-controls label {
+    font-size: 1.1rem;
+    margin-bottom: 5px;
+}
+
+.config-controls input[type="number"] {
+    width: 100px;
+    padding: 8px;
+    font-size: 1rem;
+    text-align: center;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.config-controls button {
+    padding: 10px 20px;
+    background-color: #5cb85c;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.config-controls button:hover {
+    background-color: #4cae4c;
+}
+
+#start-quiz-btn {
+    background-color: #5bc0de;
+}
+
+#start-quiz-btn:hover {
+    background-color: #31b0d5;
+}
+
+#start-study-btn {
+    background-color: #f0ad4e;
+}
+
+#start-study-btn:hover {
+    background-color: #ec971f;
 }
