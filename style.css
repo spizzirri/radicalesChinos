@@ -56,17 +56,118 @@ h1 {
 /* Estilos para la lista de radicales */
 #radical-list-container {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 20px;
-    padding: 20px;
+    grid-template-columns: repeat(10, 1fr); /* 10 caracteres por fila por defecto */
+    gap: 10px;
+    padding: 15px;
+    max-width: 1800px;
+    margin: 0 auto;
+}
+
+/* Para pantallas grandes */
+@media screen and (max-width: 1800px) {
+    #radical-list-container {
+        grid-template-columns: repeat(8, 1fr); /* 8 caracteres por fila */
+    }
+    .radical-char {
+        font-size: 32px;
+        margin-bottom: 4px;
+    }
+    .radical-info p {
+        font-size: 13px;
+        margin: 2px 0;
+    }
+    .buttons button {
+        padding: 4px 8px;
+        font-size: 13px;
+    }
+}
+
+/* Para pantallas medianas */
+@media screen and (max-width: 1400px) {
+    #radical-list-container {
+        grid-template-columns: repeat(6, 1fr); /* 6 caracteres por fila */
+    }
+    .radical-char {
+        font-size: 36px;
+        margin-bottom: 4px;
+    }
+    .radical-info p {
+        font-size: 14px;
+        margin: 2px 0;
+    }
+    .buttons button {
+        padding: 5px 10px;
+        font-size: 14px;
+    }
+}
+
+/* Para pantallas pequeñas */
+@media screen and (max-width: 1000px) {
+    #radical-list-container {
+        grid-template-columns: repeat(4, 1fr); /* 4 caracteres por fila */
+    }
+    .radical-char {
+        font-size: 42px;
+        margin-bottom: 4px;
+    }
+    .radical-info p {
+        font-size: 15px;
+        margin: 2px 0;
+    }
+    .buttons button {
+        padding: 6px 12px;
+        font-size: 15px;
+    }
+}
+
+/* Para tablets */
+@media screen and (max-width: 768px) {
+    #radical-list-container {
+        grid-template-columns: repeat(2, 1fr); /* 2 caracteres por fila */
+    }
+    .radical-char {
+        font-size: 48px;
+        margin-bottom: 4px;
+    }
+    .radical-info p {
+        font-size: 16px;
+        margin: 2px 0;
+    }
+    .buttons button {
+        padding: 8px 15px;
+        font-size: 16px;
+    }
+}
+
+/* Para móviles */
+@media screen and (max-width: 480px) {
+    #radical-list-container {
+        grid-template-columns: 1fr; /* 1 carácter por fila */
+    }
+    .radical-char {
+        font-size: 54px;
+        margin-bottom: 4px;
+    }
+    .radical-info p {
+        font-size: 18px;
+        margin: 2px 0;
+    }
+    .buttons button {
+        padding: 10px 20px;
+        font-size: 18px;
+    }
 }
 
 .radical-card {
     background-color: #fff;
-    padding: 20px;
+    padding: 8px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     transition: transform 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
 }
 
 .radical-card:hover {
@@ -74,34 +175,38 @@ h1 {
 }
 
 .radical-char {
-    font-size: 48px;
-    margin-bottom: 10px;
-    text-align: center;
+    font-size: 28px;
+    margin-bottom: 4px;
     color: #333;
+    line-height: 1;
 }
 
 .radical-info {
-    margin: 10px 0;
+    margin: 4px 0;
+    width: 100%;
 }
 
 .radical-info p {
-    margin: 5px 0;
+    margin: 2px 0;
     color: #666;
+    font-size: 12px;
+    line-height: 1.2;
 }
 
 .buttons {
     display: flex;
-    gap: 10px;
-    margin-top: 15px;
+    gap: 4px;
+    margin-top: 4px;
 }
 
 .buttons button {
-    padding: 8px 15px;
+    padding: 3px 6px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    font-size: 16px;
+    font-size: 12px;
+    line-height: 1;
 }
 
 .pronounce-btn {
@@ -418,5 +523,13 @@ h1 {
 
     #writing-radical-info {
         color: #ccc;
+    }
+
+    .radical-card {
+        background-color: #2d2d2d;
+    }
+
+    .radical-char {
+        color: #fff;
     }
 }
