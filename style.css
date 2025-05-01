@@ -1,0 +1,229 @@
+body {
+    font-family: sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 1rem;
+    text-align: center;
+}
+
+header h1 {
+    margin-bottom: 0.5rem;
+}
+
+.quiz-controls {
+    margin-top: 1rem;
+}
+
+.quiz-controls label {
+    margin-right: 0.5rem;
+}
+
+.quiz-controls input[type="number"] {
+    width: 60px;
+    padding: 5px;
+    margin-right: 10px;
+}
+
+header button {
+    padding: 8px 15px;
+    background-color: #5cb85c;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+header button:hover {
+    background-color: #4cae4c;
+}
+
+main {
+    padding: 1rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Responsive grid */
+    gap: 1rem;
+}
+
+.radical-card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 1rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center content */
+    text-align: center;
+}
+
+.radical-char {
+    font-size: 3rem; /* Make the radical large */
+    margin-bottom: 0.5rem;
+    color: #e63946; /* Reddish color for emphasis */
+}
+
+.radical-card p {
+    margin: 0.3rem 0;
+    font-size: 0.9rem;
+}
+
+.radical-card p strong {
+    color: #333;
+}
+
+.radical-card .buttons {
+    margin-top: 1rem;
+    display: flex;
+    gap: 0.5rem; /* Space between buttons */
+}
+
+.radical-card button {
+    padding: 6px 12px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #f0f0f0;
+}
+
+.radical-card button:hover {
+    background-color: #e0e0e0;
+}
+
+.radical-card .pronounce-btn {
+    background-color: #5bc0de;
+    color: white;
+    border-color: #46b8da;
+}
+.radical-card .pronounce-btn:hover {
+    background-color: #31b0d5;
+}
+
+.radical-card .write-btn {
+    background-color: #f0ad4e;
+    color: white;
+    border-color: #eea236;
+}
+.radical-card .write-btn:hover {
+    background-color: #ec971f;
+}
+
+
+/* Modal Styles */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1000; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0,0,0,0.6); /* Black w/ opacity */
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 10% auto; /* 10% from the top and centered */
+    padding: 25px;
+    border: 1px solid #888;
+    width: 80%; /* Could be more specific */
+    max-width: 600px;
+    border-radius: 8px;
+    position: relative;
+}
+
+.close-btn {
+    color: #aaa;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close-btn:hover,
+.close-btn:focus {
+    color: black;
+    text-decoration: none;
+}
+
+/* Writing Modal Specifics */
+#writing-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 1rem;
+}
+
+#practice-canvas {
+    border: 1px solid black;
+    background-color: #fff;
+    cursor: crosshair; /* Indicate drawing area */
+    margin-top: 10px;
+}
+/* Style the Hanzi Writer target div if used */
+#hanzi-writer-target {
+  width: 200px;
+  height: 200px;
+  border: 1px dashed #ccc; /* Placeholder border */
+  margin-bottom: 10px; /* Space before canvas if both are shown */
+}
+
+#clear-canvas-btn {
+    margin-top: 10px;
+    padding: 8px 15px;
+}
+
+/* Quiz Modal Specifics */
+#quiz-area input[type="text"] {
+    width: calc(100% - 22px); /* Full width minus padding/border */
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+#quiz-area button, #quiz-results button {
+    padding: 10px 20px;
+    margin-top: 10px;
+    cursor: pointer;
+    background-color: #5cb85c;
+    color: white;
+    border: none;
+    border-radius: 4px;
+}
+#quiz-area button:hover, #quiz-results button:hover {
+     background-color: #4cae4c;
+}
+
+#quiz-feedback {
+    margin-top: 10px;
+    font-weight: bold;
+}
+#quiz-feedback.correct {
+    color: green;
+}
+#quiz-feedback.incorrect {
+    color: red;
+}
+
+#quiz-results {
+    margin-top: 1rem;
+}
+
+#restart-quiz-btn {
+    background-color: #f0ad4e;
+    border-color: #eea236;
+}
+#restart-quiz-btn:hover {
+    background-color: #ec971f;
+}

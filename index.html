@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estudio de Radicales Chinos</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Opcional: Cargar Hanzi Writer si se usa -->
+    <!-- <script src="lib/hanzi-writer.min.js"></script> -->
+</head>
+<body>
+    <header>
+        <h1>Estudio de Radicales Chinos (Basado en los 214 Radicales Kangxi)</h1>
+        <div class="quiz-controls">
+            <label for="quiz-count">Número de preguntas:</label>
+            <input type="number" id="quiz-count" value="10" min="1" max="50">
+            <button id="start-quiz-btn">Iniciar Quiz Aleatorio</button>
+        </div>
+    </header>
+
+    <main id="radical-list-container">
+        <!-- Los radicales se cargarán aquí mediante JavaScript -->
+        <p>Cargando radicales...</p>
+    </main>
+
+    <!-- Modal para Práctica de Escritura -->
+    <div id="writing-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" id="close-writing-modal">×</span>
+            <h2>Practicar Escritura</h2>
+            <div id="writing-area">
+                <div id="hanzi-writer-target"></div> <!-- Contenedor para Hanzi Writer -->
+                <canvas id="practice-canvas" width="200" height="200"></canvas> <!-- Canvas alternativo/placeholder -->
+                <p><em>Nota: La visualización del orden de trazos requiere la librería Hanzi Writer. Este es un placeholder.</em></p>
+                 <button id="clear-canvas-btn">Borrar Trazos</button>
+            </div>
+             <p id="writing-radical-info"></p>
+        </div>
+    </div>
+
+    <!-- Modal para el Quiz -->
+    <div id="quiz-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" id="close-quiz-modal">×</span>
+            <h2>Quiz de Radicales</h2>
+            <div id="quiz-area">
+                <p id="quiz-question"></p>
+                <input type="text" id="quiz-answer" placeholder="Escribe tu respuesta aquí">
+                <button id="submit-quiz-answer">Enviar Respuesta</button>
+                <p id="quiz-feedback"></p>
+                <button id="next-quiz-question" style="display: none;">Siguiente</button>
+            </div>
+            <div id="quiz-results" style="display: none;">
+                <h3>Resultados del Quiz</h3>
+                <p id="quiz-score"></p>
+                <button id="restart-quiz-btn">Volver a Empezar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="radical_data.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
