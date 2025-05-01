@@ -158,16 +158,25 @@ h1 {
     padding: 8px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    transition: transform 0.3s ease;
+    transition: all 0.3s ease;
     display: flex;
     gap: 0.25em;
     flex-direction: column;
     align-items: center;
     text-align: center;
+    cursor: pointer;
 }
 
 .radical-card:hover {
-    transform: translateY(-5px);
+    background-color: #f8f9fa;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.radical-card:active {
+    background-color: #e9ecef;
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .radical-char {
@@ -536,5 +545,13 @@ h1 {
 
     .radical-char {
         color: #fff;
+    }
+
+    .radical-card:hover {
+        background-color: #3d3d3d;
+    }
+    
+    .radical-card:active {
+        background-color: #4d4d4d;
     }
 }
