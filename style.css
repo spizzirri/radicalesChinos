@@ -1,452 +1,422 @@
 body {
-    font-family: sans-serif;
-    line-height: 1.6;
+    font-family: 'Arial', sans-serif;
     margin: 0;
-    padding: 0;
-    background-color: #f4f4f4;
+    padding: 20px;
+    background-color: #f5f5f5;
 }
 
 header {
-    background-color: #333;
-    color: #fff;
-    padding: 1rem;
-    text-align: center;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
 }
 
-header h1 {
-    margin-bottom: 0.5rem;
+h1 {
+    color: #333;
+    margin: 0 0 20px 0;
+    font-size: 24px;
 }
 
+/* Estilos para los botones principales */
 .quiz-controls {
-    margin-top: 1rem;
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
 }
 
-.quiz-controls label {
-    margin-right: 0.5rem;
-}
-
-.quiz-controls input[type="number"] {
-    width: 60px;
-    padding: 5px;
-    margin-right: 10px;
-}
-
-header button {
-    padding: 8px 15px;
-    background-color: #5cb85c;
-    color: white;
+.quiz-controls button {
+    padding: 10px 20px;
+    font-size: 16px;
     border: none;
-    border-radius: 4px;
+    border-radius: 5px;
     cursor: pointer;
-    font-size: 1.1rem;
+    transition: all 0.3s ease;
     display: flex;
     align-items: center;
     gap: 8px;
 }
 
-header button:hover {
-    background-color: #4cae4c;
+#start-quiz-btn {
+    background-color: #4CAF50;
+    color: white;
 }
 
-main {
-    padding: 1rem;
+#start-study-btn {
+    background-color: #2196F3;
+    color: white;
+}
+
+.quiz-controls button:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+}
+
+/* Estilos para la lista de radicales */
+#radical-list-container {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Responsive grid */
-    gap: 1rem;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 20px;
 }
 
 .radical-card {
     background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    padding: 1rem;
+    padding: 20px;
+    border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* Center content */
-    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.radical-card:hover {
+    transform: translateY(-5px);
 }
 
 .radical-char {
-    font-size: 3rem; /* Make the radical large */
-    margin-bottom: 0.5rem;
-    color: #e63946; /* Reddish color for emphasis */
-}
-
-.radical-card p {
-    margin: 0.3rem 0;
-    font-size: 0.9rem;
-}
-
-.radical-card p strong {
+    font-size: 48px;
+    margin-bottom: 10px;
+    text-align: center;
     color: #333;
 }
 
-.radical-card .buttons {
-    margin-top: 1rem;
-    display: flex;
-    gap: 0.5rem; /* Space between buttons */
-}
-
-.radical-card button {
-    padding: 6px 12px;
-    font-size: 0.9rem;
-    cursor: pointer;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    background-color: #f0f0f0;
-}
-
-.radical-card button:hover {
-    background-color: #e0e0e0;
-}
-
-.radical-card .pronounce-btn {
-    background-color: #5bc0de;
-    color: white;
-    border-color: #46b8da;
-}
-.radical-card .pronounce-btn:hover {
-    background-color: #31b0d5;
-}
-
-.radical-card .write-btn {
-    background-color: #f0ad4e;
-    color: white;
-    border-color: #eea236;
-}
-.radical-card .write-btn:hover {
-    background-color: #ec971f;
-}
-
-
-/* Modal Styles */
-.modal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 1000; /* Sit on top */
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgba(0,0,0,0.6); /* Black w/ opacity */
-}
-
-.modal-content {
-    background-color: #fefefe;
-    margin: 10% auto; /* 10% from the top and centered */
-    padding: 25px;
-    border: 1px solid #888;
-    width: 80%; /* Could be more specific */
-    max-width: 600px;
-    border-radius: 8px;
-    position: relative;
-}
-
-.close-btn {
-    color: #aaa;
-    position: absolute;
-    top: 10px;
-    right: 20px;
-    font-size: 28px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.close-btn:hover,
-.close-btn:focus {
-    color: black;
-    text-decoration: none;
-}
-
-/* Writing Modal Specifics */
-#writing-area {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 1rem;
-}
-
-#practice-canvas {
-    border: 1px solid black;
-    background-color: #fff;
-    cursor: crosshair; /* Indicate drawing area */
-    margin-top: 10px;
-}
-/* Style the Hanzi Writer target div if used */
-#hanzi-writer-target {
-  width: 200px;
-  height: 200px;
-  border: 1px dashed #ccc; /* Placeholder border */
-  margin-bottom: 10px; /* Space before canvas if both are shown */
-}
-
-#clear-canvas-btn {
-    margin-top: 10px;
-    padding: 8px 15px;
-}
-
-/* Quiz Modal Specifics */
-#quiz-area input[type="text"] {
-    width: calc(100% - 22px); /* Full width minus padding/border */
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-
-#quiz-area button, #quiz-results button {
-    padding: 10px 20px;
-    margin-top: 10px;
-    cursor: pointer;
-    background-color: #5cb85c;
-    color: white;
-    border: none;
-    border-radius: 4px;
-}
-#quiz-area button:hover, #quiz-results button:hover {
-     background-color: #4cae4c;
-}
-
-#quiz-feedback {
-    margin-top: 10px;
-    font-weight: bold;
-}
-#quiz-feedback.correct {
-    color: green;
-}
-#quiz-feedback.incorrect {
-    color: red;
-}
-
-#quiz-results {
-    margin-top: 1rem;
-}
-
-#restart-quiz-btn {
-    background-color: #f0ad4e;
-    border-color: #eea236;
-}
-#restart-quiz-btn:hover {
-    background-color: #ec971f;
-}
-
-.quiz-options {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin: 15px 0;
-}
-
-.quiz-option {
-    padding: 10px 15px;
-    background-color: #f8f9fa;
-    border: 1px solid #dee2e6;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    text-align: left;
-}
-
-.quiz-option:hover {
-    background-color: #e9ecef;
-    border-color: #ced4da;
-}
-
-.quiz-option.incorrect {
-    background-color: #f8d7da;
-    border-color: #f5c6cb;
-    color: #721c24;
-    cursor: not-allowed;
-}
-
-.quiz-option.correct {
-    background-color: #d4edda;
-    border-color: #c3e6cb;
-    color: #155724;
-    cursor: not-allowed;
-}
-
-/* Estilos para el Modo Estudio */
-.study-controls {
-    margin-bottom: 20px;
-    text-align: center;
-}
-
-#study-card {
-    background-color: #fff;
-    border-radius: 8px;
-    padding: 20px;
-    margin: 20px 0;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-.radical-char-study {
-    font-size: 4rem;
-    text-align: center;
-    margin: 20px 0;
-    color: #e63946;
-}
-
 .radical-info {
-    margin: 20px 0;
-    text-align: center;
+    margin: 10px 0;
 }
 
 .radical-info p {
-    margin: 10px 0;
-    font-size: 1.1rem;
+    margin: 5px 0;
+    color: #666;
+}
+
+.buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.buttons button {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 16px;
+}
+
+.pronounce-btn {
+    background-color: #2196F3;
+    color: white;
+}
+
+.write-btn {
+    background-color: #FF9800;
+    color: white;
+}
+
+.buttons button:hover {
+    opacity: 0.9;
+}
+
+/* Estilos para los modales */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 1000;
+}
+
+.modal-content {
+    position: relative;
+    background-color: #fff;
+    margin: 5% auto;
+    padding: 20px;
+    width: 90%;
+    max-width: 500px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.close-btn {
+    position: absolute;
+    right: 20px;
+    top: 10px;
+    font-size: 24px;
+    cursor: pointer;
+    color: #666;
+}
+
+.close-btn:hover {
+    color: #333;
+}
+
+/* Estilos para el modo de estudio */
+#study-card {
+    text-align: center;
+    padding: 20px;
+}
+
+.radical-char-study {
+    font-size: 72px;
+    margin-bottom: 20px;
+    color: #333;
 }
 
 .study-buttons {
     display: flex;
+    gap: 10px;
     justify-content: center;
-    gap: 15px;
     margin-top: 20px;
 }
 
-.pronounce-study-btn {
-    font-size: 1.5rem;
+.study-buttons button {
     padding: 10px 20px;
-    background-color: #5bc0de;
-    color: white;
     border: none;
-    border-radius: 4px;
+    border-radius: 5px;
     cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 16px;
+}
+
+.pronounce-study-btn {
+    background-color: #2196F3;
+    color: white;
 }
 
 .learned-btn {
-    padding: 10px 20px;
-    background-color: #5cb85c;
+    background-color: #4CAF50;
     color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
 }
 
 .not-learned-btn {
-    padding: 10px 20px;
-    background-color: #d9534f;
+    background-color: #f44336;
     color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
 }
 
-.pronounce-study-btn:hover {
-    background-color: #31b0d5;
-}
-
-.learned-btn:hover {
-    background-color: #4cae4c;
-}
-
-.not-learned-btn:hover {
-    background-color: #c9302c;
+.study-buttons button:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
 }
 
 #study-progress {
     text-align: center;
     margin-top: 20px;
-    font-size: 1.1rem;
     color: #666;
 }
 
-/* Estilos para la Configuración del Quiz */
-.quiz-config-area {
+/* Estilos para el modo quiz */
+#quiz-area {
     text-align: center;
-    padding: 20px;
 }
 
-.quiz-config-controls {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 15px;
+#quiz-question {
+    font-size: 20px;
+    margin-bottom: 20px;
+    color: #333;
 }
 
-.quiz-config-controls label {
-    font-size: 1.1rem;
-    margin-bottom: 5px;
+.radical-char-quiz {
+    font-size: 36px;
+    color: #333;
+    margin: 0 5px;
 }
 
-.quiz-config-controls input[type="number"] {
-    width: 100px;
-    padding: 8px;
-    font-size: 1rem;
+#quiz-answer {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+#quiz-feedback {
+    margin: 10px 0;
+    font-weight: bold;
+}
+
+#quiz-feedback.correct {
+    color: #4CAF50;
+}
+
+#quiz-feedback.incorrect {
+    color: #f44336;
+}
+
+#quiz-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.quiz-option {
+    padding: 10px;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    background-color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 16px;
+}
+
+.quiz-option:hover {
+    border-color: #2196F3;
+    transform: translateY(-2px);
+}
+
+.quiz-option.correct {
+    background-color: #4CAF50;
+    color: white;
+    border-color: #4CAF50;
+}
+
+.quiz-option.incorrect {
+    background-color: #f44336;
+    color: white;
+    border-color: #f44336;
+}
+
+#quiz-results {
     text-align: center;
-    border: 1px solid #ddd;
-    border-radius: 4px;
 }
 
-.quiz-config-controls button {
+#quiz-score {
+    font-size: 20px;
+    margin: 20px 0;
+    color: #333;
+}
+
+/* Estilos para la práctica de escritura */
+#writing-area {
+    text-align: center;
+}
+
+#practice-canvas {
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    margin: 20px auto;
+    background-color: white;
+    cursor: crosshair;
+}
+
+#clear-canvas-btn {
     padding: 10px 20px;
-    background-color: #5cb85c;
+    background-color: #f44336;
     color: white;
     border: none;
-    border-radius: 4px;
+    border-radius: 5px;
     cursor: pointer;
-    font-size: 1rem;
+    transition: all 0.3s ease;
 }
 
-.quiz-config-controls button:hover {
-    background-color: #4cae4c;
+#clear-canvas-btn:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
 }
 
-/* Estilos unificados para modales de configuración */
+#writing-radical-info {
+    margin: 20px 0;
+    color: #666;
+}
+
+/* Estilos para la configuración */
 .config-area {
-    text-align: center;
     padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    margin-bottom: 20px;
 }
 
 .config-controls {
     display: flex;
     flex-direction: column;
-    align-items: center;
     gap: 15px;
 }
 
 .config-controls label {
-    font-size: 1.1rem;
-    margin-bottom: 5px;
+    font-weight: bold;
+    color: #333;
 }
 
-.config-controls input[type="number"] {
-    width: 100px;
+.config-controls input {
     padding: 8px;
-    font-size: 1rem;
-    text-align: center;
-    border: 1px solid #ddd;
+    border: 2px solid #ddd;
     border-radius: 4px;
+    font-size: 16px;
 }
 
 .config-controls button {
     padding: 10px 20px;
-    background-color: #5cb85c;
+    background-color: #4CAF50;
     color: white;
     border: none;
-    border-radius: 4px;
+    border-radius: 5px;
     cursor: pointer;
-    font-size: 1rem;
+    transition: all 0.3s ease;
+    font-size: 16px;
 }
 
 .config-controls button:hover {
-    background-color: #4cae4c;
+    opacity: 0.9;
+    transform: translateY(-2px);
 }
 
-#start-quiz-btn {
-    background-color: #5bc0de;
-}
+/* Estilos para el modo oscuro */
+@media (prefers-color-scheme: dark) {
+    body {
+        background-color: #1a1a1a;
+        color: #fff;
+    }
 
-#start-quiz-btn:hover {
-    background-color: #31b0d5;
-}
+    header, .radical-card, .modal-content {
+        background-color: #2d2d2d;
+    }
 
-#start-study-btn {
-    background-color: #f0ad4e;
-}
+    h1, .radical-char, .radical-char-study, .radical-char-quiz {
+        color: #fff;
+    }
 
-#start-study-btn:hover {
-    background-color: #ec971f;
+    .radical-info p {
+        color: #ccc;
+    }
+
+    #quiz-question, #quiz-score {
+        color: #fff;
+    }
+
+    #quiz-answer, .config-controls input {
+        background-color: #3d3d3d;
+        border-color: #4d4d4d;
+        color: #fff;
+    }
+
+    .config-area {
+        background-color: #3d3d3d;
+    }
+
+    .config-controls label {
+        color: #fff;
+    }
+
+    .close-btn {
+        color: #ccc;
+    }
+
+    .close-btn:hover {
+        color: #fff;
+    }
+
+    #practice-canvas {
+        background-color: #3d3d3d;
+        border-color: #4d4d4d;
+    }
+
+    #writing-radical-info {
+        color: #ccc;
+    }
 }
