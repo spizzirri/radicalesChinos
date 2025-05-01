@@ -6,6 +6,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeQuizBtn = document.getElementById('close-quiz-modal');
     const startQuizBtn = document.getElementById('start-quiz-btn');
     const quizCountInput = document.getElementById('quiz-count');
+    const startStudyBtn = document.getElementById('start-study-btn');
+    const studyModal = document.getElementById('study-modal');
+    const closeStudyBtn = document.getElementById('close-study-modal');
+    const startStudySessionBtn = document.getElementById('start-study-session');
+    const studyCard = document.getElementById('study-card');
+    const studyProgress = document.getElementById('study-progress');
+    const quizConfigModal = document.getElementById('quiz-config-modal');
+    const closeQuizConfigBtn = document.getElementById('close-quiz-config-modal');
+    const startQuizSessionBtn = document.getElementById('start-quiz-session');
+
+    // Variables para el modo de estudio
+    let studyRadicals = [];
+    let currentStudyIndex = 0;
+    let learnedRadicals = new Set(JSON.parse(localStorage.getItem('learnedRadicals') || '[]'));
+    let notLearnedRadicals = new Set(JSON.parse(localStorage.getItem('notLearnedRadicals') || '[]'));
 
     // --- RENDER RADICALS ---
     function renderRadicals() {
@@ -50,9 +65,12 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // Quiz Start Button
-    startQuizBtn.onclick = () => {
+    startQuizBtn.onclick = () => quizConfigModal.style.display = 'block';
+    closeQuizConfigBtn.onclick = () => quizConfigModal.style.display = 'none';
+    startQuizSessionBtn.onclick = () => {
         const count = parseInt(quizCountInput.value);
         if (count > 0 && count <= radicalsData.length) {
+            quizConfigModal.style.display = 'none';
             startQuiz(count);
         } else {
             alert(`Por favor, introduce un número entre 1 y ${radicalsData.length}.`);
@@ -226,23 +244,78 @@ document.addEventListener('DOMContentLoaded', () => {
 
         let questionText = '';
         if (questionType === 'meaning') {
-            questionText = `¿Cuál es el significado de <span class="radical-char-quiz">${currentQuestionData.radical}</span>?`;
+            questionText = `¿Cuál es el <strong>significado</strong> de <span class="radical-char-quiz">${currentQuestionData.radical}</span>?`;
             currentQuestionData.correctAnswer = currentQuestionData.meaning.toLowerCase();
             currentQuestionData.answerType = 'meaning';
         } else {
-            questionText = `¿Cuál es el Pinyin de <span class="radical-char-quiz">${currentQuestionData.radical}</span>?`;
-            // Pinyin puede tener múltiples, tomar el primero o el más común
+            questionText = `¿Cuál es el <strong>Pinyin</strong> de <span class="radical-char-quiz">${currentQuestionData.radical}</span> (${currentQuestionData.meaning})?`;
             currentQuestionData.correctAnswer = currentQuestionData.pinyin.split('/')[0].toLowerCase();
-             currentQuestionData.answerType = 'pinyin';
+            currentQuestionData.answerType = 'pinyin';
         }
 
-        quizQuestionEl.innerHTML = `Pregunta ${currentQuestionIndex + 1}/${quizRadicals.length}: ${questionText}`;
+        quizQuestionEl.innerHTML = `Pregunta ${currentQuestionIndex + 1}/${quizRadicals.length}:<br>${questionText}`;
         quizAnswerInput.value = '';
         quizFeedbackEl.textContent = '';
         quizAnswerInput.focus();
         quizSubmitBtn.style.display = 'inline-block';
         quizNextBtn.style.display = 'none';
         quizAnswerInput.disabled = false;
+
+        // Generar opciones múltiples
+        generateMultipleChoice();
+    }
+
+    function generateMultipleChoice() {
+        let optionsContainer = document.getElementById('quiz-options');
+        if (!optionsContainer) {
+            optionsContainer = document.createElement('div');
+            optionsContainer.id = 'quiz-options';
+            optionsContainer.className = 'quiz-options';
+            quizQuestionEl.parentNode.insertBefore(optionsContainer, quizAnswerInput);
+        }
+
+        optionsContainer.innerHTML = '';
+
+        // Obtener opciones aleatorias
+        let options = [];
+        if (currentQuestionData.answerType === 'pinyin') {
+            // Para preguntas de Pinyin, usar otros radicales
+            const otherRadicals = radicalsData
+                .filter(r => r.radical !== currentQuestionData.radical)
+                .sort(() => 0.5 - Math.random())
+                .slice(0, 2);
+            
+            options = [
+                currentQuestionData.pinyin.split('/')[0],
+                ...otherRadicals.map(r => r.pinyin.split('/')[0])
+            ];
+        } else {
+            // Para preguntas de significado, usar otros radicales
+            const otherRadicals = radicalsData
+                .filter(r => r.radical !== currentQuestionData.radical)
+                .sort(() => 0.5 - Math.random())
+                .slice(0, 2);
+            
+            options = [
+                currentQuestionData.meaning,
+                ...otherRadicals.map(r => r.meaning)
+            ];
+        }
+
+        // Mezclar las opciones
+        options = options.sort(() => 0.5 - Math.random());
+
+        // Crear botones de opción
+        options.forEach(option => {
+            const button = document.createElement('button');
+            button.className = 'quiz-option';
+            button.textContent = option;
+            button.onclick = () => {
+                quizAnswerInput.value = option;
+                checkAnswer();
+            };
+            optionsContainer.appendChild(button);
+        });
     }
 
     function checkAnswer() {
@@ -304,5 +377,83 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- INITIALIZATION ---
     renderRadicals();
+
+    // Función para guardar el progreso en localStorage
+    function saveProgress() {
+        localStorage.setItem('learnedRadicals', JSON.stringify([...learnedRadicals]));
+        localStorage.setItem('notLearnedRadicals', JSON.stringify([...notLearnedRadicals]));
+    }
+
+    // Función para iniciar una sesión de estudio
+    function startStudySession() {
+        const count = parseInt(document.getElementById('study-count').value);
+        if (count > 0 && count <= radicalsData.length) {
+            // Seleccionar radicales aleatorios
+            const shuffled = radicalsData.sort(() => 0.5 - Math.random());
+            studyRadicals = shuffled.slice(0, count);
+            currentStudyIndex = 0;
+            
+            // Mostrar el primer radical
+            showNextRadical();
+            studyCard.style.display = 'block';
+            document.querySelector('.study-controls').style.display = 'none';
+        } else {
+            alert(`Por favor, introduce un número entre 1 y ${radicalsData.length}.`);
+        }
+    }
+
+    // Función para mostrar el siguiente radical
+    function showNextRadical() {
+        if (currentStudyIndex >= studyRadicals.length) {
+            // Sesión completada
+            studyCard.style.display = 'none';
+            document.querySelector('.study-controls').style.display = 'block';
+            studyProgress.textContent = '¡Sesión de estudio completada!';
+            return;
+        }
+
+        const currentRadical = studyRadicals[currentStudyIndex];
+        document.querySelector('.radical-char-study').textContent = currentRadical.radical;
+        document.querySelector('.radical-pinyin').textContent = currentRadical.pinyin;
+        document.querySelector('.radical-meaning').textContent = currentRadical.meaning;
+        studyProgress.textContent = `Radical ${currentStudyIndex + 1} de ${studyRadicals.length}`;
+    }
+
+    // Event Listeners para el modo de estudio
+    startStudyBtn.onclick = () => studyModal.style.display = 'block';
+    closeStudyBtn.onclick = () => studyModal.style.display = 'none';
+    startStudySessionBtn.onclick = startStudySession;
+
+    // Event listener para cerrar el modal al hacer clic fuera
+    window.onclick = (event) => {
+        if (event.target == studyModal) studyModal.style.display = 'none';
+        if (event.target == writingModal) writingModal.style.display = 'none';
+        if (event.target == quizModal) quizModal.style.display = 'none';
+        if (event.target == quizConfigModal) quizConfigModal.style.display = 'none';
+    };
+
+    // Event listeners para los botones de estudio
+    document.querySelector('.pronounce-study-btn').onclick = () => {
+        const currentRadical = studyRadicals[currentStudyIndex];
+        speak(currentRadical.radical);
+    };
+
+    document.querySelector('.learned-btn').onclick = () => {
+        const currentRadical = studyRadicals[currentStudyIndex];
+        learnedRadicals.add(currentRadical.radical);
+        notLearnedRadicals.delete(currentRadical.radical);
+        saveProgress();
+        currentStudyIndex++;
+        showNextRadical();
+    };
+
+    document.querySelector('.not-learned-btn').onclick = () => {
+        const currentRadical = studyRadicals[currentStudyIndex];
+        notLearnedRadicals.add(currentRadical.radical);
+        learnedRadicals.delete(currentRadical.radical);
+        saveProgress();
+        currentStudyIndex++;
+        showNextRadical();
+    };
 
 }); // End DOMContentLoaded
