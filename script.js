@@ -196,7 +196,7 @@ document.addEventListener('DOMContentLoaded', () => {
             width: 200,
             height: 200,
             padding: 5,
-            showOutline: false,
+            showOutline: true,
             showCharacter: false,
             strokeAnimationSpeed: 1,
             delayBetweenStrokes: 200,
@@ -211,7 +211,82 @@ document.addEventListener('DOMContentLoaded', () => {
             highlightCompleteColor: '#4CAF50',
             highlightOnComplete: true,
             fadeOnComplete: true,
-            fadeOnCompleteDuration: 1000
+            fadeOnCompleteDuration: 1000,
+            leniency: 0.5, // Ajusta la tolerancia para la validación de trazos
+            strokeFadeDuration: 400,
+            strokeHighlightSpeed: 200,
+            strokeHighlightDuration: 200,
+            strokeHighlightColor: '#4CAF50',
+            strokeHighlightEndColor: '#4CAF50',
+            strokeHighlightWidth: 3,
+            strokeHighlightOpacity: 0.5,
+            strokeHighlightFadeDuration: 200,
+            strokeHighlightFadeDelay: 200,
+            strokeHighlightFadeOpacity: 0.5,
+            strokeHighlightFadeWidth: 3,
+            strokeHighlightFadeColor: '#4CAF50',
+            strokeHighlightFadeEndColor: '#4CAF50',
+            strokeHighlightFadeStartColor: '#4CAF50',
+            strokeHighlightFadeEndOpacity: 0.5,
+            strokeHighlightFadeStartOpacity: 0.5,
+            strokeHighlightFadeEndWidth: 3,
+            strokeHighlightFadeStartWidth: 3,
+            strokeHighlightFadeEndDuration: 200,
+            strokeHighlightFadeStartDuration: 200,
+            strokeHighlightFadeEndDelay: 200,
+            strokeHighlightFadeStartDelay: 200,
+            strokeHighlightFadeEndSpeed: 200,
+            strokeHighlightFadeStartSpeed: 200,
+            strokeHighlightFadeEndEasing: 'easeInOut',
+            strokeHighlightFadeStartEasing: 'easeInOut',
+            strokeHighlightFadeEndTiming: 'linear',
+            strokeHighlightFadeStartTiming: 'linear',
+            strokeHighlightFadeEndRepeat: 1,
+            strokeHighlightFadeStartRepeat: 1,
+            strokeHighlightFadeEndYoyo: false,
+            strokeHighlightFadeStartYoyo: false,
+            strokeHighlightFadeEndReverse: false,
+            strokeHighlightFadeStartReverse: false,
+            strokeHighlightFadeEndMirror: false,
+            strokeHighlightFadeStartMirror: false,
+            strokeHighlightFadeEndAlternate: false,
+            strokeHighlightFadeStartAlternate: false,
+            strokeHighlightFadeEndAlternateDelay: 200,
+            strokeHighlightFadeStartAlternateDelay: 200,
+            strokeHighlightFadeEndAlternateDuration: 200,
+            strokeHighlightFadeStartAlternateDuration: 200,
+            strokeHighlightFadeEndAlternateEasing: 'easeInOut',
+            strokeHighlightFadeStartAlternateEasing: 'easeInOut',
+            strokeHighlightFadeEndAlternateTiming: 'linear',
+            strokeHighlightFadeStartAlternateTiming: 'linear',
+            strokeHighlightFadeEndAlternateRepeat: 1,
+            strokeHighlightFadeStartAlternateRepeat: 1,
+            strokeHighlightFadeEndAlternateYoyo: false,
+            strokeHighlightFadeStartAlternateYoyo: false,
+            strokeHighlightFadeEndAlternateReverse: false,
+            strokeHighlightFadeStartAlternateReverse: false,
+            strokeHighlightFadeEndAlternateMirror: false,
+            strokeHighlightFadeStartAlternateMirror: false,
+            strokeHighlightFadeEndAlternateAlternate: false,
+            strokeHighlightFadeStartAlternateAlternate: false,
+            strokeHighlightFadeEndAlternateAlternateDelay: 200,
+            strokeHighlightFadeStartAlternateAlternateDelay: 200,
+            strokeHighlightFadeEndAlternateAlternateDuration: 200,
+            strokeHighlightFadeStartAlternateAlternateDuration: 200,
+            strokeHighlightFadeEndAlternateAlternateEasing: 'easeInOut',
+            strokeHighlightFadeStartAlternateAlternateEasing: 'easeInOut',
+            strokeHighlightFadeEndAlternateAlternateTiming: 'linear',
+            strokeHighlightFadeStartAlternateAlternateTiming: 'linear',
+            strokeHighlightFadeEndAlternateAlternateRepeat: 1,
+            strokeHighlightFadeStartAlternateAlternateRepeat: 1,
+            strokeHighlightFadeEndAlternateAlternateYoyo: false,
+            strokeHighlightFadeStartAlternateAlternateYoyo: false,
+            strokeHighlightFadeEndAlternateAlternateReverse: false,
+            strokeHighlightFadeStartAlternateAlternateReverse: false,
+            strokeHighlightFadeEndAlternateAlternateMirror: false,
+            strokeHighlightFadeStartAlternateAlternateMirror: false,
+            strokeHighlightFadeEndAlternateAlternateAlternate: false,
+            strokeHighlightFadeStartAlternateAlternateAlternate: false
         });
 
         // Mostrar el área de Hanzi Writer y ocultar el canvas
@@ -227,6 +302,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <button class="hide-strokes-btn">Ocultar Trazos</button>
             <button class="animate-strokes-btn">Animar Trazos</button>
             <button class="clear-strokes-btn">Borrar Trazos</button>
+            <button class="start-quiz-btn">Iniciar Práctica</button>
         `;
         hanziWriterTarget.parentNode.insertBefore(controlsDiv, hanziWriterTarget.nextSibling);
 
@@ -245,9 +321,40 @@ document.addEventListener('DOMContentLoaded', () => {
         controlsDiv.querySelector('.clear-strokes-btn').onclick = () => {
             writer.reset();
         };
-
-        // Habilitar el modo de dibujo
-        writer.quiz();
+        controlsDiv.querySelector('.start-quiz-btn').onclick = () => {
+            writer.quiz({
+                onComplete: (summaryData) => {
+                    console.log('¡Completado!', summaryData);
+                    // Mostrar mensaje de éxito
+                    const feedback = document.createElement('div');
+                    feedback.className = 'quiz-feedback';
+                    feedback.textContent = '¡Excelente! Has completado el carácter correctamente.';
+                    feedback.style.color = '#4CAF50';
+                    feedback.style.marginTop = '10px';
+                    hanziWriterTarget.parentNode.insertBefore(feedback, controlsDiv);
+                    
+                    // Ocultar el feedback después de 3 segundos
+                    setTimeout(() => {
+                        feedback.remove();
+                    }, 3000);
+                },
+                onMistake: (strokeData) => {
+                    console.log('Error en el trazo', strokeData);
+                    // Mostrar mensaje de error
+                    const feedback = document.createElement('div');
+                    feedback.className = 'quiz-feedback';
+                    feedback.textContent = 'Intenta de nuevo. Recuerda el orden de los trazos.';
+                    feedback.style.color = '#f44336';
+                    feedback.style.marginTop = '10px';
+                    hanziWriterTarget.parentNode.insertBefore(feedback, controlsDiv);
+                    
+                    // Ocultar el feedback después de 2 segundos
+                    setTimeout(() => {
+                        feedback.remove();
+                    }, 2000);
+                }
+            });
+        };
 
         // Guardar la referencia al writer actual
         currentWriter = writer;
