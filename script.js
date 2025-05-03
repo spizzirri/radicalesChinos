@@ -197,14 +197,14 @@ document.addEventListener('DOMContentLoaded', () => {
             height: 200,
             padding: 5,
             showOutline: true,
-            showCharacter: false,
+            showCharacter: true,
             strokeAnimationSpeed: 1,
             delayBetweenStrokes: 200,
             delayBetweenLoops: 1000,
-            strokeColor: '#333',
-            radicalColor: '#333',
-            outlineColor: '#ddd',
-            drawingColor: '#333',
+            strokeColor: '#4CAF50', // Color verde claro para los trazos
+            radicalColor: '#4CAF50', // Color verde claro para los trazos
+            outlineColor: '#ffffff', // Color blanco para el contorno
+            drawingColor: '#4CAF50', // Color verde claro para el dibujo
             drawingWidth: 3,
             showHintAfterMisses: 3,
             highlightColor: '#4CAF50',
@@ -212,81 +212,7 @@ document.addEventListener('DOMContentLoaded', () => {
             highlightOnComplete: true,
             fadeOnComplete: true,
             fadeOnCompleteDuration: 1000,
-            leniency: 0.5, // Ajusta la tolerancia para la validación de trazos
-            strokeFadeDuration: 400,
-            strokeHighlightSpeed: 200,
-            strokeHighlightDuration: 200,
-            strokeHighlightColor: '#4CAF50',
-            strokeHighlightEndColor: '#4CAF50',
-            strokeHighlightWidth: 3,
-            strokeHighlightOpacity: 0.5,
-            strokeHighlightFadeDuration: 200,
-            strokeHighlightFadeDelay: 200,
-            strokeHighlightFadeOpacity: 0.5,
-            strokeHighlightFadeWidth: 3,
-            strokeHighlightFadeColor: '#4CAF50',
-            strokeHighlightFadeEndColor: '#4CAF50',
-            strokeHighlightFadeStartColor: '#4CAF50',
-            strokeHighlightFadeEndOpacity: 0.5,
-            strokeHighlightFadeStartOpacity: 0.5,
-            strokeHighlightFadeEndWidth: 3,
-            strokeHighlightFadeStartWidth: 3,
-            strokeHighlightFadeEndDuration: 200,
-            strokeHighlightFadeStartDuration: 200,
-            strokeHighlightFadeEndDelay: 200,
-            strokeHighlightFadeStartDelay: 200,
-            strokeHighlightFadeEndSpeed: 200,
-            strokeHighlightFadeStartSpeed: 200,
-            strokeHighlightFadeEndEasing: 'easeInOut',
-            strokeHighlightFadeStartEasing: 'easeInOut',
-            strokeHighlightFadeEndTiming: 'linear',
-            strokeHighlightFadeStartTiming: 'linear',
-            strokeHighlightFadeEndRepeat: 1,
-            strokeHighlightFadeStartRepeat: 1,
-            strokeHighlightFadeEndYoyo: false,
-            strokeHighlightFadeStartYoyo: false,
-            strokeHighlightFadeEndReverse: false,
-            strokeHighlightFadeStartReverse: false,
-            strokeHighlightFadeEndMirror: false,
-            strokeHighlightFadeStartMirror: false,
-            strokeHighlightFadeEndAlternate: false,
-            strokeHighlightFadeStartAlternate: false,
-            strokeHighlightFadeEndAlternateDelay: 200,
-            strokeHighlightFadeStartAlternateDelay: 200,
-            strokeHighlightFadeEndAlternateDuration: 200,
-            strokeHighlightFadeStartAlternateDuration: 200,
-            strokeHighlightFadeEndAlternateEasing: 'easeInOut',
-            strokeHighlightFadeStartAlternateEasing: 'easeInOut',
-            strokeHighlightFadeEndAlternateTiming: 'linear',
-            strokeHighlightFadeStartAlternateTiming: 'linear',
-            strokeHighlightFadeEndAlternateRepeat: 1,
-            strokeHighlightFadeStartAlternateRepeat: 1,
-            strokeHighlightFadeEndAlternateYoyo: false,
-            strokeHighlightFadeStartAlternateYoyo: false,
-            strokeHighlightFadeEndAlternateReverse: false,
-            strokeHighlightFadeStartAlternateReverse: false,
-            strokeHighlightFadeEndAlternateMirror: false,
-            strokeHighlightFadeStartAlternateMirror: false,
-            strokeHighlightFadeEndAlternateAlternate: false,
-            strokeHighlightFadeStartAlternateAlternate: false,
-            strokeHighlightFadeEndAlternateAlternateDelay: 200,
-            strokeHighlightFadeStartAlternateAlternateDelay: 200,
-            strokeHighlightFadeEndAlternateAlternateDuration: 200,
-            strokeHighlightFadeStartAlternateAlternateDuration: 200,
-            strokeHighlightFadeEndAlternateAlternateEasing: 'easeInOut',
-            strokeHighlightFadeStartAlternateAlternateEasing: 'easeInOut',
-            strokeHighlightFadeEndAlternateAlternateTiming: 'linear',
-            strokeHighlightFadeStartAlternateAlternateTiming: 'linear',
-            strokeHighlightFadeEndAlternateAlternateRepeat: 1,
-            strokeHighlightFadeStartAlternateAlternateRepeat: 1,
-            strokeHighlightFadeEndAlternateAlternateYoyo: false,
-            strokeHighlightFadeStartAlternateAlternateYoyo: false,
-            strokeHighlightFadeEndAlternateAlternateReverse: false,
-            strokeHighlightFadeStartAlternateAlternateReverse: false,
-            strokeHighlightFadeEndAlternateAlternateMirror: false,
-            strokeHighlightFadeStartAlternateAlternateMirror: false,
-            strokeHighlightFadeEndAlternateAlternateAlternate: false,
-            strokeHighlightFadeStartAlternateAlternateAlternate: false
+            leniency: 0.5
         });
 
         // Mostrar el área de Hanzi Writer y ocultar el canvas
@@ -298,28 +224,20 @@ document.addEventListener('DOMContentLoaded', () => {
         const controlsDiv = document.createElement('div');
         controlsDiv.className = 'writing-controls';
         controlsDiv.innerHTML = `
-            <button class="show-strokes-btn">Mostrar Trazos</button>
-            <button class="hide-strokes-btn">Ocultar Trazos</button>
-            <button class="animate-strokes-btn">Animar Trazos</button>
-            <button class="clear-strokes-btn">Borrar Trazos</button>
-            <button class="start-quiz-btn">Iniciar Práctica</button>
+            <div class="main-controls">
+                <button class="animate-strokes-btn">Animar Trazos</button>
+                <button class="start-quiz-btn">Iniciar Práctica</button>
+            </div>
+            <div class="navigation-controls">
+                <button class="prev-radical-btn">← Anterior</button>
+                <button class="next-radical-btn">Siguiente →</button>
+            </div>
         `;
         hanziWriterTarget.parentNode.insertBefore(controlsDiv, hanziWriterTarget.nextSibling);
 
         // Event listeners para los botones
-        controlsDiv.querySelector('.show-strokes-btn').onclick = () => {
-            writer.showOutline();
-            writer.showCharacter();
-        };
-        controlsDiv.querySelector('.hide-strokes-btn').onclick = () => {
-            writer.hideOutline();
-            writer.hideCharacter();
-        };
         controlsDiv.querySelector('.animate-strokes-btn').onclick = () => {
             writer.animateCharacter();
-        };
-        controlsDiv.querySelector('.clear-strokes-btn').onclick = () => {
-            writer.reset();
         };
         controlsDiv.querySelector('.start-quiz-btn').onclick = () => {
             writer.quiz({
@@ -354,6 +272,23 @@ document.addEventListener('DOMContentLoaded', () => {
                     }, 2000);
                 }
             });
+        };
+
+        // Navegación entre radicales
+        controlsDiv.querySelector('.prev-radical-btn').onclick = () => {
+            const currentIndex = radicalsData.findIndex(r => r.radical === radicalData.radical);
+            if (currentIndex > 0) {
+                const prevRadical = radicalsData[currentIndex - 1];
+                openWritingPractice(prevRadical);
+            }
+        };
+
+        controlsDiv.querySelector('.next-radical-btn').onclick = () => {
+            const currentIndex = radicalsData.findIndex(r => r.radical === radicalData.radical);
+            if (currentIndex < radicalsData.length - 1) {
+                const nextRadical = radicalsData[currentIndex + 1];
+                openWritingPractice(nextRadical);
+            }
         };
 
         // Guardar la referencia al writer actual

@@ -424,10 +424,23 @@ h1 {
 
 .writing-controls {
     display: flex;
-    gap: 10px;
+    flex-direction: column;
+    gap: 15px;
     justify-content: center;
     margin: 20px 0;
     flex-wrap: wrap;
+}
+
+.writing-controls .main-controls {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.writing-controls .navigation-controls {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
 }
 
 .writing-controls button {
@@ -446,8 +459,9 @@ h1 {
     transform: translateY(-2px);
 }
 
-.writing-controls .clear-strokes-btn {
-    background-color: #f44336;
+.writing-controls .prev-radical-btn,
+.writing-controls .next-radical-btn {
+    background-color: #4CAF50;
 }
 
 #writing-radical-info {
@@ -577,7 +591,8 @@ h1 {
         background-color: #1976D2;
     }
 
-    .writing-controls .clear-strokes-btn {
-        background-color: #D32F2F;
+    .writing-controls .prev-radical-btn,
+    .writing-controls .next-radical-btn {
+        background-color: #388E3C;
     }
 }
