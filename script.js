@@ -293,6 +293,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Guardar la referencia al writer actual
         currentWriter = writer;
+
+        // Iniciar la animación automáticamente después de un breve retraso
+        setTimeout(() => {
+            writer.animateCharacter();
+        }, 500);
     }
 
     // Funciones para el canvas básico
