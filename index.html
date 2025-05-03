@@ -101,14 +101,14 @@
             <h2>Practicar Escritura</h2>
             <div id="writing-area">
                 <div id="hanzi-writer-target"></div>
-                <canvas id="practice-canvas" width="200" height="200"></canvas>
-                <p><em>Nota: La visualización del orden de trazos requiere la librería Hanzi Writer. Este es un placeholder.</em></p>
-                <button id="clear-canvas-btn">Borrar Trazos</button>
+                <canvas id="practice-canvas" width="200" height="200" style="display: none;"></canvas>
+                <button id="clear-canvas-btn" style="display: none;">Borrar Trazos</button>
             </div>
             <p id="writing-radical-info"></p>
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/hanzi-writer@3.5/dist/hanzi-writer.min.js"></script>
     <script src="radical_data.js"></script>
     <script src="script.js"></script>
 </body>

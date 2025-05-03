@@ -59,15 +59,33 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Modal Close Buttons
-    closeWritingBtn.onclick = () => writingModal.style.display = 'none';
-    closeQuizBtn.onclick = () => quizModal.style.display = 'none';
-    closeQuizConfigBtn.onclick = () => quizConfigModal.style.display = 'none';
-    closeStudyBtn.onclick = () => studyModal.style.display = 'none';
-    closeStudyConfigBtn.onclick = () => studyConfigModal.style.display = 'none';
+    closeWritingBtn.onclick = () => {
+        writingModal.style.display = 'none';
+        // Limpiar el área de Hanzi Writer y controles
+        const existingControls = document.querySelector('.writing-controls');
+        if (existingControls) {
+            existingControls.remove();
+        }
+        hanziWriterTarget.innerHTML = '';
+        if (currentWriter) {
+            currentWriter = null;
+        }
+    };
 
     // Event listener para cerrar el modal al hacer clic fuera
     window.onclick = (event) => {
-        if (event.target == writingModal) writingModal.style.display = 'none';
+        if (event.target == writingModal) {
+            writingModal.style.display = 'none';
+            // Limpiar el área de Hanzi Writer y controles
+            const existingControls = document.querySelector('.writing-controls');
+            if (existingControls) {
+                existingControls.remove();
+            }
+            hanziWriterTarget.innerHTML = '';
+            if (currentWriter) {
+                currentWriter = null;
+            }
+        }
         if (event.target == quizModal) quizModal.style.display = 'none';
         if (event.target == quizConfigModal) quizConfigModal.style.display = 'none';
         if (event.target == studyModal) studyModal.style.display = 'none';
@@ -165,12 +183,74 @@ document.addEventListener('DOMContentLoaded', () => {
     function openWritingPractice(radicalData) {
         writingRadicalInfo.textContent = `Practicando: ${radicalData.radical} (${radicalData.pinyin}) - ${radicalData.meaning}`;
         writingModal.style.display = 'block';
-        clearCanvas();
 
-        hanziWriterTarget.style.display = 'none';
-        practiceCanvas.style.display = 'block';
-        clearCanvasBtn.style.display = 'inline-block';
-        drawPlaceholder(radicalData.radical);
+        // Limpiar el área de Hanzi Writer y controles anteriores
+        const existingControls = document.querySelector('.writing-controls');
+        if (existingControls) {
+            existingControls.remove();
+        }
+        hanziWriterTarget.innerHTML = '';
+
+        // Configurar Hanzi Writer
+        const writer = HanziWriter.create('hanzi-writer-target', radicalData.radical, {
+            width: 200,
+            height: 200,
+            padding: 5,
+            showOutline: false,
+            showCharacter: false,
+            strokeAnimationSpeed: 1,
+            delayBetweenStrokes: 200,
+            delayBetweenLoops: 1000,
+            strokeColor: '#333',
+            radicalColor: '#333',
+            outlineColor: '#ddd',
+            drawingColor: '#333',
+            drawingWidth: 3,
+            showHintAfterMisses: 3,
+            highlightColor: '#4CAF50',
+            highlightCompleteColor: '#4CAF50',
+            highlightOnComplete: true,
+            fadeOnComplete: true,
+            fadeOnCompleteDuration: 1000
+        });
+
+        // Mostrar el área de Hanzi Writer y ocultar el canvas
+        hanziWriterTarget.style.display = 'block';
+        practiceCanvas.style.display = 'none';
+        clearCanvasBtn.style.display = 'none';
+
+        // Agregar botones de control
+        const controlsDiv = document.createElement('div');
+        controlsDiv.className = 'writing-controls';
+        controlsDiv.innerHTML = `
+            <button class="show-strokes-btn">Mostrar Trazos</button>
+            <button class="hide-strokes-btn">Ocultar Trazos</button>
+            <button class="animate-strokes-btn">Animar Trazos</button>
+            <button class="clear-strokes-btn">Borrar Trazos</button>
+        `;
+        hanziWriterTarget.parentNode.insertBefore(controlsDiv, hanziWriterTarget.nextSibling);
+
+        // Event listeners para los botones
+        controlsDiv.querySelector('.show-strokes-btn').onclick = () => {
+            writer.showOutline();
+            writer.showCharacter();
+        };
+        controlsDiv.querySelector('.hide-strokes-btn').onclick = () => {
+            writer.hideOutline();
+            writer.hideCharacter();
+        };
+        controlsDiv.querySelector('.animate-strokes-btn').onclick = () => {
+            writer.animateCharacter();
+        };
+        controlsDiv.querySelector('.clear-strokes-btn').onclick = () => {
+            writer.reset();
+        };
+
+        // Habilitar el modo de dibujo
+        writer.quiz();
+
+        // Guardar la referencia al writer actual
+        currentWriter = writer;
     }
 
     // Funciones para el canvas básico

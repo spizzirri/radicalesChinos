@@ -415,32 +415,45 @@ h1 {
     text-align: center;
 }
 
-#practice-canvas {
-    border: 2px solid #ddd;
-    border-radius: 8px;
+#hanzi-writer-target {
     margin: 20px auto;
     background-color: white;
-    cursor: crosshair;
+    border: 2px solid #ddd;
+    border-radius: 8px;
 }
 
-#clear-canvas-btn {
-    padding: 10px 20px;
-    background-color: #f44336;
-    color: white;
+.writing-controls {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin: 20px 0;
+    flex-wrap: wrap;
+}
+
+.writing-controls button {
+    padding: 8px 16px;
     border: none;
-    border-radius: 5px;
+    border-radius: 4px;
     cursor: pointer;
     transition: all 0.3s ease;
+    font-size: 14px;
+    background-color: #2196F3;
+    color: white;
 }
 
-#clear-canvas-btn:hover {
+.writing-controls button:hover {
     opacity: 0.9;
     transform: translateY(-2px);
+}
+
+.writing-controls .clear-strokes-btn {
+    background-color: #f44336;
 }
 
 #writing-radical-info {
     margin: 20px 0;
     color: #666;
+    font-size: 16px;
 }
 
 /* Estilos para la configuración */
@@ -553,5 +566,18 @@ h1 {
     
     .radical-card:active {
         background-color: #4d4d4d;
+    }
+
+    #hanzi-writer-target {
+        background-color: #2d2d2d;
+        border-color: #4d4d4d;
+    }
+
+    .writing-controls button {
+        background-color: #1976D2;
+    }
+
+    .writing-controls .clear-strokes-btn {
+        background-color: #D32F2F;
     }
 }
